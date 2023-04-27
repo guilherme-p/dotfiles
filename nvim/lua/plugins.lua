@@ -24,14 +24,14 @@ return require('packer').startup(function(use)
         end
     }
 
-    use {
-        "bluz71/vim-nightfly-colors", as = "nightfly",
-        config = function() vim.cmd('colorscheme nightfly') end
-    }
+    -- use {
+    --     "bluz71/vim-nightfly-colors", as = "nightfly",
+    --     config = function() vim.cmd('colorscheme nightfly') end
+    -- }
 
     use {
         "catppuccin/nvim", as = "catppuccin",
-        -- config = function() vim.cmd('colorscheme catppuccin') end
+        config = function() vim.cmd('colorscheme catppuccin') end
 
     }
 
@@ -107,7 +107,7 @@ return require('packer').startup(function(use)
             -- See `:help nvim-treesitter`
             require('nvim-treesitter.configs').setup {
                 -- Add languages to be installed here that you want installed for treesitter
-                ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+                ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'html', 'css', 'help', 'vim' },
 
                 -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
                 auto_install = false,
@@ -146,7 +146,7 @@ return require('packer').startup(function(use)
         "williamboman/mason-lspconfig.nvim",
         config = function()
             require("mason-lspconfig").setup {
-                ensure_installed = { 'rust_analyzer', "pyright", "lua_ls", "clangd", "gopls" },
+                ensure_installed = { 'rust_analyzer', "pyright", "lua_ls", "clangd", "gopls", "emmet_ls", "tsserver", "html" },
                 automatic_installation = true,
             }
 
@@ -168,7 +168,8 @@ return require('packer').startup(function(use)
                 end
             }
 
-        end
+        end,
+        after = "mason.nvim",
     }
 
     use({
@@ -248,5 +249,43 @@ return require('packer').startup(function(use)
     use {
         "iamcco/markdown-preview.nvim",
         run = function() vim.fn["mkdp#util#install"]() end,
+    }
+
+    use {
+        'mhartington/formatter.nvim', 
+        config = function ()
+            require("formatter").setup {
+                -- Enable or disable logging
+                logging = true,
+                -- Set the log level
+                log_level = vim.log.levels.WARN,
+                -- All formatter configurations are opt-in
+                filetype = {
+                    python = {
+                        require("formatter.filetypes.python").black
+                    },
+
+                    typescript = {
+                        require("formatter.filetypes.typescript").prettier
+                    },
+
+                    typescriptreact = {
+                        require("formatter.filetypes.typescriptreact").prettier
+                    },
+
+                    javascript = {
+                        require("formatter.filetypes.javascript").prettier
+                    },
+
+                    javascriptreact = {
+                        require("formatter.filetypes.javascriptreact").prettier
+                    },
+
+                    css = {
+                        require("formatter.filetypes.css").prettier
+                    },
+                }
+            }
+        end
     }
 end)
