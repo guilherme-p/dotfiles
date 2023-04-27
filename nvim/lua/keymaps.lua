@@ -50,6 +50,7 @@ keymap.set("n", '<leader>hd', vim.lsp.buf.hover, { desc = 'Hover Documentation' 
 -- Lesser used LSP functionality
 keymap.set("n", 'gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration' })
 
+keymap.set("n", "<leader>f", ":Format<CR>", { desc = '[F]ormat file'})
 -- nvim-tree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- toggle file explorer
 
