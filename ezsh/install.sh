@@ -100,6 +100,13 @@ else
     git clone --depth 1 https://github.com/supercrabtree/k ~/.config/ezsh/oh-my-zsh/custom/plugins/k
 fi
 
+if [ -d ~/.config/ezsh/zoxide]; then
+    cd ~/.config/ezsh/zoxide && git pull ~/.config/ezsh/zoxide
+else
+    git clone --depth 1 https://github.com/ajeetdsouza/zoxide ~/.config/ezsh/zoxide
+    ~/.config/ezsh/zoxide/main/install
+fi
+
 if [[ $1 == "--cp-hist" ]] || [[ $1 == "-c" ]]; then
     echo -e "\nCopying bash_history to zsh_history\n"
     if command -v python &>/dev/null; then

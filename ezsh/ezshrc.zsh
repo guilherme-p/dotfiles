@@ -13,12 +13,6 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-POWERLEVEL9K_OS_ICON_BACKGROUND="white"
-POWERLEVEL9K_OS_ICON_FOREGROUND="blue"
-POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -68,7 +62,6 @@ plugins=(
     history-substring-search
     systemd
     k
-    z
     sudo
     # httpie
     # git

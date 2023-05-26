@@ -32,6 +32,7 @@ export FZF_DEFAULT_OPS="--extended"
 alias k="k -h"       # show human readable file sizes, in kb, mb etc
 unsetopt BEEP
 
-
 bindkey '^I'   complete-word       # tab          | complete
 bindkey '^ ' autosuggest-accept    # ctrl + space | autosuggest
+
+eval "$(zoxide init zsh)"
