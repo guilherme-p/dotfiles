@@ -52,18 +52,31 @@ keymap.set("n", 'gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration' }
 
 keymap.set("n", "<leader>f", ":Format<CR>", { desc = '[F]ormat file'})
 -- nvim-tree
-keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- toggle file explorer
+keymap.set("n", "<leader>fe", ":NvimTreeToggle<CR>") -- toggle file explorer
 
 keymap.set("n", "<leader>to", ":tabnew ") -- open new tab
 keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
 
-keymap.set("n", "<leader>bx", ":bd<CR>") -- close current buffer
-keymap.set("n", "<leader>bo", ":e ") -- open new file in buffer
+keymap.set("n", "<leader>x", ":bd<CR>") -- close current buffer
+keymap.set("n", "<leader>e", ":e ") -- open new file in buffer
 
 keymap.set("n", "<leader>/", ":%s/")
 
 keymap.set("n", "<Tab>", ":bnext<CR>")
 keymap.set("n", "<S-Tab>", ":bprevious<CR>")
+
+keymap.set({ "n", "v" }, "+", "<C-a>")
+keymap.set({ "n", "v" }, "-", "<C-x>")
+
+keymap.set("n", "<leader>1", ":LualineBuffersJump 1<CR>")
+keymap.set("n", "<leader>2", ":LualineBuffersJump 2<CR>")
+keymap.set("n", "<leader>3", ":LualineBuffersJump 3<CR>")
+keymap.set("n", "<leader>4", ":LualineBuffersJump 4<CR>")
+keymap.set("n", "<leader>5", ":LualineBuffersJump 5<CR>")
+keymap.set("n", "<leader>6", ":LualineBuffersJump 6<CR>")
+keymap.set("n", "<leader>7", ":LualineBuffersJump 7<CR>")
+keymap.set("n", "<leader>8", ":LualineBuffersJump 8<CR>")
+keymap.set("n", "<leader>9", ":LualineBuffersJump 9<CR>")
 
 keymap.set("n", ">", ">>")
 keymap.set("n", "<", "<<")
