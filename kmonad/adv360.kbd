@@ -13,7 +13,7 @@
   ;; output (send-event-sink)
 
   ;; For MacOS
-  input  (iokit-name)
+  input  (iokit-name "Kinesis Adv360")
   output (kext)
 
   ;; Comment this if you want unhandled events not to be emitted
@@ -40,7 +40,7 @@
   _    _    _    _    _    _                   _    _    _    _    _    _
   _    _    _    _    _    _                   _    _    _    _    _    _
   _    _    _    _    _    _                   _    _    _    _    _    _
-  _    _    _    _    _    _                   _    _    _    _    _  _
+  _    _    _    _    _    _                   _    _    _    _    _    _
        _    _    _    _                             _    _    _    _ 
 
                               _ _      _ _
@@ -50,14 +50,16 @@
 -------------------------------------------------------------------------- |#
 
 (defalias 
-    al1 (tap-hold-next 500 grv lmet)
+    al1 (tap-hold-next 200 grv lmet)
     al2 (tap-hold-next 500 caps lalt)
     al3 (tap-hold-next 500 left lctl)
     al4 (tap-hold-next 500 rght lsft)
     al5 (tap-hold-next 500 [ rsft)
     al6 (tap-hold-next 500 ] rctl)
-    al7 (tap-hold-next 500 down ralt)
+    al7 (tap-hold-next 500 C-a ralt)
     al8 (tap-hold-next 500 up rmet)
+    al9 (tap-hold-next 500 del (layer-toggle first))
+    al10 (tap-hold-next 500 ret (layer-toggle first))
 )
 
 (deflayer base
@@ -68,6 +70,18 @@
        @al1 @al2 @al3 @al4                          @al5 @al6 @al7 @al8 
 
                               _ _      _ _
-                          spc _ _      _ _ spc
+                       spc @al9 _      _ @al10 spc
+                                _      _
+)
+
+(deflayer first 
+  _    _    _    _    _    _                   _    _    _    _    _    _
+  _    _    _    _    _    _                   _    _    _    _    _    _
+  _    _    _    _    _    _                   left down up   rght _    _
+  _    _    _    _    _    _                   _    _    _    _    _    _
+       _    _    _    _                             _    _    _    _ 
+
+                              _ _      _ _
+                            _ _ _      _ _ _
                                 _      _
 )
