@@ -47,7 +47,8 @@ return require('packer').startup(function(use)
             require('lualine').setup {
                 options = { theme = 'nightfly' },
                 sections = {
-                    lualine_a = {
+                    lualine_a = { 'mode' },
+                    lualine_b = {
                         {
                             'buffers',
                             mode = 2, -- 0: Shows buffer name
@@ -55,9 +56,14 @@ return require('packer').startup(function(use)
                             -- 2: Shows buffer name + buffer index
                             -- 3: Shows buffer number
                             -- 4: Shows buffer name + buffer number
+                            buffers_color = {
+                                active = 'StatusLine',   -- color for active buffer
+                                inactive = 'StatusLineNC', -- color for inactive buffer
+                            },
 
                         }
-                    }
+                    },
+                    lualine_c = {},
                 }
             }
         end

@@ -15,6 +15,10 @@ keymap.set({ "n", "v" }, "q", "<nop>")
 -- delete without yanking
 keymap.set({ "n", "v" }, "<leader>d", '"_d')
 
+-- paste with indent level of current line 
+keymap.set({ "n", "v" }, "p", ']p')
+keymap.set({ "n", "v" }, "P", ']P')
+
 -- replace currently selected text with default register
 -- without yanking it
 keymap.set({ "n", "v", }, "<leader>p", '"_dP')
