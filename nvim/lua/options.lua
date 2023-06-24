@@ -17,3 +17,5 @@ opt.termguicolors = true
 opt.undofile = true
 opt.history = 1000
 opt.cursorline = true
+opt.splitright = true
+opt.splitbelow = true

@@ -17,10 +17,37 @@ return require('packer').startup(function(use)
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
-        requires = { {'nvim-lua/plenary.nvim'} },
+        requires =  {
+            'nvim-lua/plenary.nvim',
+            "debugloop/telescope-undo.nvim",
+        },
         config = function()
-            require('telescope').setup()
+            require('telescope').setup({
+                defaults = {
+                    -- Default configuration for telescope goes here:
+                    -- config_key = value,
+                    mappings = {
+                        i = {
+                            -- map actions.which_key to <C-h> (default: <C-/>)
+                            -- actions.which_key shows the mappings for your picker,
+                            -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+                            ["J"] = "move_selection_next",
+                            ["K"] = "move_selection_previous",
+                        }
+                    }
+                },
+            })
+
             require('telescope').load_extension('fzf')
+            require('telescope').load_extension('undo')
+        end
+    }
+
+    use { 
+        'echasnovski/mini.nvim', branch = 'stable',
+        config = function ()
+            require('mini.ai').setup()
+            require('mini.pairs').setup()
         end
     }
 
@@ -33,11 +60,6 @@ return require('packer').startup(function(use)
         "catppuccin/nvim", as = "catppuccin",
         config = function() vim.cmd('colorscheme catppuccin') end
 
-    }
-
-    use {
-        "windwp/nvim-autopairs",
-        config = function() require("nvim-autopairs").setup() end
     }
 
     use {
@@ -77,13 +99,13 @@ return require('packer').startup(function(use)
                 -- Configuration here, or leave empty to use defaults
                 keymaps = {
                     normal = "<leader>ys",
+                    delete = "<leader>ds",
+                    change = "<leader>cs",
+                    visual = "<leader>ys",
                     normal_cur = "<leader>yss",
                     normal_line = "<leader>yS",
                     normal_cur_line = "<leader>ySS",
-                    visual = "<leader>S",
-                    visual_line = "<leader>gS",
-                    delete = "<leader>ds",
-                    change = "<leader>cs",
+                    visual_line = "<leader>yS",
                 },
             })
         end
@@ -129,35 +151,35 @@ return require('packer').startup(function(use)
         end
     }
 
-    use {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        after = "nvim-treesitter",
-        requires = "nvim-treesitter/nvim-treesitter",
-        config = function ()
-            require'nvim-treesitter.configs'.setup {
-                textobjects = {
-                    select = {
-                        enable = true,
-
-                        -- Automatically jump forward to textobj, similar to targets.vim
-                        lookahead = true,
-
-                        keymaps = {
-                            -- You can use the capture groups defined in textobjects.scm
-                            ["af"] = "@function.outer",
-                            ["if"] = "@function.inner",
-                            ["ac"] = "@class.outer",
-                            -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                            -- nvim_buf_set_keymap) which plugins like which-key display
-                            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                            -- You can also use captures from other query groups like `locals.scm`
-                            ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-                        },
-                    }
-                }
-            }
-        end
-    }
+    -- use {
+    --     "nvim-treesitter/nvim-treesitter-textobjects",
+    --     after = "nvim-treesitter",
+    --     requires = "nvim-treesitter/nvim-treesitter",
+    --     config = function ()
+    --         require'nvim-treesitter.configs'.setup {
+    --             textobjects = {
+    --                 select = {
+    --                     enable = true,
+    --
+    --                     -- Automatically jump forward to textobj, similar to targets.vim
+    --                     lookahead = true,
+    --
+    --                     keymaps = {
+    --                         -- You can use the capture groups defined in textobjects.scm
+    --                         ["af"] = "@function.outer",
+    --                         ["if"] = "@function.inner",
+    --                         ["ac"] = "@class.outer",
+    --                         -- You can optionally set descriptions to the mappings (used in the desc parameter of
+    --                         -- nvim_buf_set_keymap) which plugins like which-key display
+    --                         ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+    --                         -- You can also use captures from other query groups like `locals.scm`
+    --                         ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+    --                     },
+    --                 }
+    --             }
+    --         }
+    --     end
+    -- }
 
     use 'nvim-treesitter/nvim-treesitter-context'
 
@@ -185,15 +207,6 @@ return require('packer').startup(function(use)
                 ensure_installed = { 'rust_analyzer', "pyright", "lua_ls", "clangd", "gopls", "emmet_ls", "tsserver", "html" },
                 automatic_installation = true,
             }
-
-            require("lspconfig").pyright.setup({
-                settings = {
-                    python = {
-                        pythonPath = "/usr/local/bin/python3",
-                    }
-                }
-
-            })
 
             require("mason-lspconfig").setup_handlers {
                 -- The first entry (without a key) will be the default handler
@@ -233,7 +246,10 @@ return require('packer').startup(function(use)
                     end
                 },
 
+
                 mapping = cmp.mapping.preset.insert({
+                    ['J'] = cmp.mapping.select_next_item({}),
+                    ['K'] = cmp.mapping.select_prev_item({}),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                     ['<C-Space>'] = cmp.mapping.complete {},
@@ -245,8 +261,8 @@ return require('packer').startup(function(use)
 
                 sources = cmp.config.sources(
                     {
-                        { name = "nvim_lua" },
                         { name = "nvim_lsp" },
+                        { name = "nvim_lua" },
 
                     },
                     {
@@ -324,4 +340,19 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+
+
+
 end)
