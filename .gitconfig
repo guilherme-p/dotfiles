@@ -1,0 +1,14 @@
+[user]
+    name = Guilherme Peixoto
+    email = gpeixoto120@gmail.com
+    username = guilherme-p
+
+[alias]
+    a = add
+    c = commit -v
+    s = switch
+    st = status
+    rv = remote -v
+    cl = config --global -l
+    l = log --graph --decorate --oneline
+    ll = log --graph --abbrev-commit --decorate --all --color --full-history --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
