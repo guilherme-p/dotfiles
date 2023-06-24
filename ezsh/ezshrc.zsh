@@ -59,6 +59,7 @@ plugins=(
     zsh-completions
     zsh-autosuggestions
     zsh-syntax-highlighting
+    fzf-tab
     history-substring-search
     systemd
     k

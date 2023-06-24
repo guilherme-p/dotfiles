@@ -63,6 +63,12 @@ else
     git clone --depth=1 https://github.com/zsh-users/zsh-completions ~/.config/ezsh/oh-my-zsh/custom/plugins/zsh-completions
 fi
 
+if [ -d ~/.config/ezsh/oh-my-zsh/custom/plugins/fzf-tab ]; then
+    cd ~/.config/ezsh/oh-my-zsh/custom/plugins/fzf-tab && git pull
+else
+    git clone --depth=1 https://github.com/Aloxaf/fzf-tab ~/.config/ezsh/oh-my-zsh/custom/plugins/fzf-tab
+fi
+
 if [ -d ~/.config/ezsh/oh-my-zsh/custom/plugins/zsh-history-substring-search ]; then
     cd ~/.config/ezsh/oh-my-zsh/custom/plugins/zsh-history-substring-search && git pull
 else
