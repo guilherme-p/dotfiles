@@ -37,10 +37,6 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPS="--extended"
 
-alias k="k -h"       # show human readable file sizes, in kb, mb etc
-
-alias g="git"
-
 unsetopt BEEP
 
 bindkey '^I'  fzf-tab-complete     # tab          | complete
@@ -55,5 +51,13 @@ export PATH="/usr/local/opt/sqlite/bin:$PATH"
 
 export VISUAL=nvim
 export EDITOR=$VISUAL
+
+alias g="git"
+
+alias l="exa --long --all --header"
+alias lt="exa --long --tree -L=3 --all --header"
+
+trap "source ~/.zshrc && rehash" USR1
+alias ez="$EDITOR ~/.zshrc; pkill -usr1 zsh"
 
 eval "$(zoxide init zsh)"
