@@ -1,7 +1,5 @@
 local keymap = vim.keymap
 
-keymap.set("n", "<leader>sc", ":luafile $MYVIMRC<cr>", {desc = "[S]ource [C]onfig"})
-
 keymap.set({ "n" }, "<leader>w", ":update<cr>", { silent = true, desc = "Save" })
 keymap.set("n", "<leader>q", ":q<cr>")
 keymap.set({ "n", "v", "o" }, "<C-D>", "<C-D>zz")
@@ -95,11 +93,12 @@ keymap.set("n", "<leader>7", ":LualineBuffersJump 7<CR>")
 keymap.set("n", "<leader>8", ":LualineBuffersJump 8<CR>")
 keymap.set("n", "<leader>9", ":LualineBuffersJump 9<CR>")
 
-keymap.set("n", ">", ">>")
-keymap.set("n", "<", "<<")
-keymap.set("v", ">", ">gv")
-keymap.set("v", "<", "<gv")
-keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv")
-keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv")
-keymap.set("n", "<C-j>", ":m .+1<CR>==")
-keymap.set("n", "<C-k>", ":m .-2<CR>==")
+keymap.set("n", "<A-l>", ">>")
+keymap.set("n", "<A-h>", "<<")
+keymap.set("v", "<A-l>", ">gv")
+keymap.set("v", "<A-h>", "<gv")
+
+keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
+keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
+keymap.set("n", "<A-j>", ":m .+1<CR>==")
+keymap.set("n", "<A-k>", ":m .-2<CR>==")

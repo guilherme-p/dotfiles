@@ -11,11 +11,9 @@ return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
-    use 'lewis6991/impatient.nvim'
-
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-    use {
+   use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         requires =  {
             'nvim-lua/plenary.nvim',
@@ -138,7 +136,7 @@ return require('packer').startup(function(use)
                 ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'html', 'css', 'help', 'vim' },
 
                 -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-                auto_install = false,
+                auto_install = true,
 
                 highlight = { enable = true },
                 indent = { enable = true, disable = { 'python' } },
@@ -223,29 +221,39 @@ return require('packer').startup(function(use)
 
     use({
         "L3MON4D3/LuaSnip",
+        requires = {
+            { 'honza/vim-snippets' },
+        },
+        config = function ()
+            require("luasnip.loaders.from_snipmate").lazy_load({paths = "~/.local/share/nvim/site/pack/packer/start/vim-snippets/snippets"})
+        end,
         -- follow latest release.
-        tag = "v<CurrentMajor>.*",
+        tag = "v1.*",
         -- install jsregexp (optional!:).
         run = "make install_jsregexp",
     })
 
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-nvim-lua'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-cmdline'
-
     use {
         'hrsh7th/nvim-cmp',
+        requires = {
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'hrsh7th/cmp-nvim-lua' },
+            { 'hrsh7th/cmp-buffer' },
+            { 'hrsh7th/cmp-path' },
+            { 'hrsh7th/cmp-cmdline' },
+            { 'saadparwaiz1/cmp_luasnip' },
+        },
+
         config = function()
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
+
             cmp.setup {
                 snippet = {
                     expand = function(args)
                         require('luasnip').lsp_expand(args.body)
                     end
                 },
-
 
                 mapping = cmp.mapping.preset.insert({
                     ['J'] = cmp.mapping.select_next_item({}),
@@ -257,10 +265,30 @@ return require('packer').startup(function(use)
                     ['<CR>'] = cmp.mapping.confirm {
                         select = true,
                     },
+                    ["<Tab>"] = cmp.mapping(
+                        function(fallback)
+                            if luasnip.expand_or_jumpable() then
+                                luasnip.expand_or_jump()
+                            else
+                                fallback()
+                            end
+                        end, {'i', 's'}
+                    ),
+
+                    ["<S-Tab>"] = cmp.mapping(
+                        function(fallback)
+                            if luasnip.jumpable(-1) then
+                                luasnip.jump(-1)
+                            else
+                                fallback()
+                            end
+                        end, {'i', 's'}
+                    ),
                 }),
 
                 sources = cmp.config.sources(
                     {
+                        { name = "luasnip" },
                         { name = "nvim_lsp" },
                         { name = "nvim_lua" },
 
@@ -352,7 +380,14 @@ return require('packer').startup(function(use)
         end
     }
 
-
-
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require("auto-session").setup {
+                log_level = "error",
+                -- auto_session_suppress_dirs = { "~/", "~/Downloads", "/"},
+            }
+        end
+    }
 
 end)

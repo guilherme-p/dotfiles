@@ -1,7 +1,7 @@
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
 
-require('impatient')
+vim.loader.enable()
 require('options')
 require('plugins')
 require('keymaps')
