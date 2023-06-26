@@ -53,11 +53,12 @@ export VISUAL=nvim
 export EDITOR=$VISUAL
 
 alias g="git"
+alias v="$EDITOR"
 
 alias l="exa --long --all --header"
 alias lt="exa --long --tree -L=3 --all --header"
 
 trap "source ~/.zshrc && rehash" USR1
-alias ez="$EDITOR ~/.zshrc; pkill -usr1 zsh"
+alias ez="$EDITOR ~/.zshrc; source ~/.zshrc && rehash; pkill -usr1 zsh"
 
 eval "$(zoxide init zsh)"
