@@ -1,7 +1,7 @@
 local keymap = vim.keymap
 
 keymap.set({ "n" }, "<leader>w", ":update<cr>", { silent = true, desc = "Save" })
-keymap.set("n", "<leader>q", ":q<cr>")
+keymap.set({ "n" }, "<leader>q", ":q<cr>")
 keymap.set({ "n", "v", "o" }, "<C-D>", "<C-D>zz")
 keymap.set({ "n", "v", "o" }, "<C-U>", "<C-U>zz")
 keymap.set({ "n", "v", "o" }, "H", "^")
@@ -16,13 +16,44 @@ keymap.set({ "n", "v" }, "q", "<nop>")
 
 keymap.set({ "n" }, "n", "nzz")
 keymap.set({ "n" }, "N", "Nzz")
+keymap.set({ "n" }, ",", "nzz")
+keymap.set({ "n" }, "<", "Nzz")
 
--- delete without yanking
-keymap.set({ "n", "v" }, "<leader>d", '"_d')
+keymap.set({ "n" }, "j", "gj")
+keymap.set({ "n" }, "k", "gk")
 
--- paste with indent level of current line 
-keymap.set({ "n", "v" }, "p", 'p`[V`]=')
-keymap.set({ "n", "v" }, "P", 'P`[V`]=')
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+
+keymap.set({ "n", "o" }, 'f', function() hop.hint_char1({ keys = "asdfjkl;eriu,cmvghowpqyt", current_line_only = true }) end)
+keymap.set({ "n", "o" }, '<localleader>f', function() hop.hint_char1({ keys = "asdfjkl;eriu,cmvghowpqyt", }) end)
+
+keymap.set({ "n", "o" }, 't', function() hop.hint_char1({ keys = "asdfjkl;eriu,cmvghowpqyt", direction = directions.AFTER_CURSOR, hint_offset = -1, current_line_only = true }) end)
+keymap.set({ "n", "o" }, '<localleader>t', function() hop.hint_char1({ keys = "asdfjkl;eriu,cmvghowpqyt", direction = directions.AFTER_CURSOR, hint_offset = -1 }) end)
+
+keymap.set({ "n", "o" }, 's', function() hop.hint_words({ keys = "asdfjkl;eriu,cmvghowpqyt", current_line_only = true }) end)
+keymap.set({ "n", "o" }, '<localleader>s', function() hop.hint_words({ keys = "asdfjkl;eriu,cmvghowpqyt" }) end)
+
+keymap.set({ "o" }, 'x', function() hop.hint_words({ keys = "asdfjkl;eriu,cmvghowpqyt", direction = directions.AFTER_CURSOR, hint_offset = -1, current_line_only = true }) end)
+keymap.set({ "o" }, 'X', function() hop.hint_words({ keys = "asdfjkl;eriu,cmvghowpqyt", direction = directions.AFTER_CURSOR, hint_offset = -1 }) end)
+
+
+-- delete and yank
+keymap.set({ "n", "v" }, "<leader>d", 'd')
+
+-- stop yanking deletes
+keymap.set({ "n", "v" }, "d", '"_d')
+keymap.set({ "n", "v" }, "D", '"_D')
+keymap.set({ "n", "v" }, "x", '"_x')
+keymap.set({ "n", "v" }, "c", '"_c')
+keymap.set({ "n", "v" }, "C", '"_C')
+
+-- leave cursor where it yanked in visual mode
+keymap.set({ "v" }, "y", 'ygv<Esc>')
+
+-- paste with indent level of current line and leave cursor after paste
+keymap.set({ "n", "v" }, "p", "p`[V`]=`]")
+keymap.set({ "n", "v" }, "P", "P`[V`]=`]")
 
 keymap.set({ "n", "v" }, "<leader>p", 'p')
 keymap.set({ "n", "v" }, "<leader>P", 'P')
@@ -34,7 +65,9 @@ keymap.set("n", '<leader>sgf', telescope.git_files, { desc = '[S]earch [G]it [F]
 keymap.set("n", '<leader>sh', telescope.help_tags, { desc = '[S]earch [H]elp' })
 keymap.set("n", '<leader>sw', telescope.grep_string, { desc = '[S]earch current [W]ord' })
 keymap.set("n", '<leader>sg', telescope.live_grep, { desc = '[S]earch by [G]rep' })
+keymap.set("n", '<leader>sz', telescope.current_buffer_fuzzy_find, { desc = '[S]earch [F]uzzy' })
 keymap.set("n", '<leader>sm', telescope.marks, { desc = '[S]earch [M]arks' })
+keymap.set("n", '<leader>ss', ":Telescope luasnip<cr>", { desc = '[S]earch [S]nippets' })
 
 keymap.set("n", '<leader>sd', telescope.diagnostics, { desc = '[S]earch [D]iagnostics' })
 
@@ -45,7 +78,7 @@ keymap.set('n', '<leader>dj', vim.diagnostic.goto_next)
 keymap.set("n", '<leader>sb', telescope.buffers, { desc = '[S]earch [B]uffers'})
 keymap.set("n", '<leader>sk', telescope.keymaps, { desc = '[S]earch [K]eymaps'})
 
-keymap.set("n", "<leader>ut", "<cmd>Telescope undo<cr>", { desc = '[U]ndo [T]ree'})
+keymap.set("n", "<leader>ut", ":Telescope undo<cr>", { desc = '[U]ndo [T]ree'})
 
 keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
 keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ction' })
@@ -98,6 +131,7 @@ keymap.set("n", "<A-h>", "<<")
 keymap.set("v", "<A-l>", ">gv")
 keymap.set("v", "<A-h>", "<gv")
 
+-- move lines up or down
 keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 keymap.set("n", "<A-j>", ":m .+1<CR>==")

@@ -38,6 +38,7 @@ return require('packer').startup(function(use)
 
             require('telescope').load_extension('fzf')
             require('telescope').load_extension('undo')
+            require('telescope').load_extension('luasnip')
         end
     }
 
@@ -225,7 +226,7 @@ return require('packer').startup(function(use)
             { 'honza/vim-snippets' },
         },
         config = function ()
-            require("luasnip.loaders.from_snipmate").lazy_load({paths = "~/.local/share/nvim/site/pack/packer/start/vim-snippets/snippets"})
+            require("luasnip.loaders.from_snipmate").lazy_load({paths = "~/.config/nvim/vim-snippets/snippets"})
         end,
         -- follow latest release.
         tag = "v1.*",
@@ -288,8 +289,8 @@ return require('packer').startup(function(use)
 
                 sources = cmp.config.sources(
                     {
-                        { name = "luasnip" },
                         { name = "nvim_lsp" },
+                        { name = "luasnip" },
                         { name = "nvim_lua" },
 
                     },
@@ -305,26 +306,43 @@ return require('packer').startup(function(use)
     use {
         "lukas-reineke/indent-blankline.nvim",
         config = function()
-            require("indent_blankline").setup()
+            require("ibl").setup()
         end
     }
 
+    -- use {
+    --     "ggandor/leap.nvim",
+    --     requires = {{"tpope/vim-repeat"}},
+    --     config = function()
+    --         require('leap').add_default_mappings()
+    --         require('leap').opts.safe_labels = {}
+    --     end
+    -- }
+    --
+    -- use {
+    --     "ggandor/flit.nvim",
+    --     requires = {{"ggandor/leap.nvim"}},
+    --     config = function ()
+    --         require('flit').setup()
+    --     end
+    -- }
+    --
+
     use {
-        "ggandor/leap.nvim",
-        requires = {{"tpope/vim-repeat"}},
+        "tpope/vim-repeat",
+    }
+
+    use {
+        'phaazon/hop.nvim',
+        branch = 'v2', -- optional but strongly recommended
         config = function()
-            require('leap').add_default_mappings()
-            require('leap').opts.safe_labels = {}
+            -- you can configure Hop the way you like here; see :h hop-config
+            require('hop').setup {
+                keys = 'etovxqpdygfblzhckisuran'
+            }
         end
     }
 
-    use {
-        "ggandor/flit.nvim",
-        requires = {{"ggandor/leap.nvim"}},
-        config = function ()
-            require('flit').setup()
-        end
-    }
 
     use {
         "iamcco/markdown-preview.nvim",
@@ -364,6 +382,10 @@ return require('packer').startup(function(use)
                     css = {
                         require("formatter.filetypes.css").prettier
                     },
+
+                    rust = {
+                        require("formatter.filetypes.rust").rustfmt
+                    }
                 }
             }
         end
@@ -385,9 +407,18 @@ return require('packer').startup(function(use)
         config = function()
             require("auto-session").setup {
                 log_level = "error",
+                auto_session_enabled = true,
+                auto_session_create_enabled = true,
+                auto_save_enabled = true,
+                auto_restore_enabled = true,
                 -- auto_session_suppress_dirs = { "~/", "~/Downloads", "/"},
             }
         end
+    }
+
+    use {
+        "benfowler/telescope-luasnip.nvim",
+        module = "telescope._extensions.luasnip",  -- if you wish to lazy-load
     }
 
 end)
