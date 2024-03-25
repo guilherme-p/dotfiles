@@ -1,3 +1,4 @@
+
 -- autocommand that reloads neovim and installs/updates/removes plugins
 -- when file is saved
 vim.cmd([[ 
@@ -13,7 +14,7 @@ return require('packer').startup(function(use)
 
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-   use {
+    use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         requires =  {
             'nvim-lua/plenary.nvim',
@@ -213,7 +214,19 @@ return require('packer').startup(function(use)
                 -- a dedicated handler.
                 function (server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {}
-                end
+                end,
+
+                ["rust_analyzer"] = function ()
+                    require("lspconfig").rust_analyzer.setup {
+                        settings = {
+                            ['rust-analyzer'] = {
+                                check = {
+                                    command = "clippy"
+                                }
+                            }
+                        }
+                    }
+                end,
             }
 
         end,
@@ -333,8 +346,8 @@ return require('packer').startup(function(use)
     }
 
     use {
-        'phaazon/hop.nvim',
-        branch = 'v2', -- optional but strongly recommended
+        'smoka7/hop.nvim',
+        tag = '*',
         config = function()
             -- you can configure Hop the way you like here; see :h hop-config
             require('hop').setup {
